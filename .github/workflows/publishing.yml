@@ -39,7 +39,7 @@ jobs:
       - name: notify Slack
         uses: rtCamp/action-slack-notify@v2.1.0
         env:
-          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_TTT_UPDATES }}
           SLACK_USERNAME: 'githubbot'
           SLACK_ICON_EMOJI: ':genie:'
           SLACK_MESSAGE: 'a new build is ready'
