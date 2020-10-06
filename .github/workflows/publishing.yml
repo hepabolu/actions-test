@@ -45,8 +45,8 @@ jobs:
       - name: Create a Slack message
         id: slack_message
         env:
-          msg_tag: ${{ steps.release_info.outputs.tag }}
-          msg_url: ${{ steps.release_info.outputs.browser_download_url }}
+          msg_tag: ${{ steps.release_info.outputs.tag }} - tag
+          msg_url: ${{ steps.release_info.outputs.browser_download_url }} - url
         run: |
           msg='Release '
           if [[ ${{ steps.release_info.outputs.release_type == 'nightly' }} ]]; then
