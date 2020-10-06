@@ -39,6 +39,6 @@ jobs:
       - name: notify Slack
         uses: rtCamp/action-slack-notify@master
         env:
-          SLACK_WEBHOOK: ${{ secrects.SLACK_GENERAL }}
+          SLACK_WEBHOOK: ${{ secrets.SLACK_GENERAL }}
           SLACK_USERNAME: 'githubbot'
           SLACK_ICON_EMOJI: ':genie:'
