@@ -1,8 +1,8 @@
 name: Publish
 on:
   schedule:
-    - cron: '*/5 * * * *'
-    # - cron: '0 6 * * *' # Nightly, run at 06:00 UTC
+    # - cron: '*/5 * * * *'
+    - cron: '0 6 * * *' # Nightly, run at 06:00 UTC
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v2.0
@@ -18,7 +18,7 @@ jobs:
         shell: bash
         run: |
           # check if we need to build
-          D=300   # 86400 - 24 hours in seconds
+          D=86400 # - 24 hours in seconds
 
           lastcommit="$(curl -sL https://api.github.com/repos/$GITHUB_REPOSITORY/commits | jq -r '[.[] | select (.commit.message != "Updating docs") ][0].commit.author.date')"
           timestamp=$(date -u -d "$lastcommit" +%s)
@@ -60,6 +60,7 @@ jobs:
           echo 'EOF' >> $GITHUB_ENV
 
       - name: notify Slack
+        if: env.GHA_WORK_TO_DO == 1
         uses: rtCamp/action-slack-notify@v2.1.0
         env:
           SLACK_WEBHOOK: ${{ secrets.SLACK_TTT_UPDATES }}
