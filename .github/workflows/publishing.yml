@@ -1,8 +1,8 @@
 name: Publish
 on:
   schedule:
-    # - cron: '* * * * *'
-    - cron: '0 6 * * *' # Nightly, run at 06:00 UTC
+    - cron: '* * * * *'
+    # - cron: '0 6 * * *' # Nightly, run at 06:00 UTC
   push:
     tags:
       - 'v*' # Push events to matching v*, i.e. v1.0, v2.0
@@ -36,6 +36,9 @@ jobs:
           echo "worktodo: $worktodo"
           echo "GHA_WORK_TO_DO=$worktodo" >> $GITHUB_ENV
 
-      - name: cancelling the workflow if there is nothing to do
-        if: env.GHA_WORK_TO_DO == 0
-        uses: andymckay/cancel-action@0.2
+      - name: notify Slack
+        uses: rtCamp/action-slack-notify@master
+        env:
+          SLACK_WEBHOOK: ${{ secrects.SLACK_GENERAL }}
+          SLACK_USERNAME: 'githubbot'
+          SLACK_ICON_EMOJI: ':genie:'
