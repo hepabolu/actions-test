@@ -1,7 +1,7 @@
 name: Publish
 on:
   schedule:
-    - cron: '*/2 * * * *'
+    - cron: '*/5 * * * *'
     # - cron: "0 6 * * *" # Nightly, run at 06:00 UTC
   push:
     tags:
