@@ -44,13 +44,16 @@ jobs:
 
       - name: Create a Slack message
         id: slack_message
+        env:
+          msg_tag: ${{ steps.release_info.outputs.tag }}
+          msg_url: ${{ steps.release_info.outputs.browser_download_url }}
         run: |
           msg='Release '
           if [[ ${{ steps.release_info.outputs.release_type == 'nightly' }} ]]; then
             msg='Prerelease '
           fi
-          msg="${msg} ${{ steps.release_info.outputs.tag }} is built.
-          Available at ${{ steps.release_info.outputs.browser_download_url }}
+          msg="${msg} ${msg_tag} is built.
+          Available at ${msg_url}
           "
           echo 'TTT_BUILD<<EOF' >> $GITHUB_ENV
           echo "$msg" >> $GITHUB_ENV
