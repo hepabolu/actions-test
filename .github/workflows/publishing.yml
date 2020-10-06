@@ -1,0 +1,40 @@
+name: Publish
+on:
+  schedule:
+    - cron: '*/5 * * * *'
+    # - cron: "0 6 * * *" # Nightly, run at 06:00 UTC
+  push:
+    tags:
+      - 'v*' # Push events to matching v*, i.e. v1.0, v2.0
+jobs:
+  build:
+    if: >
+      github.repository_owner == 'bartificer'
+      || startsWith(github.ref, 'refs/heads/ci/test/')
+      || startsWith(github.ref, 'refs/tags/')
+    runs-on: ubuntu-latest
+    outputs:
+      version: ${{ steps.release_info.outputs.version }}
+      tag: ${{ steps.release_info.outputs.tag }}
+      date: ${{ steps.release_info.outputs.date }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+    steps:
+      - name: Activity check
+        shell: bash
+        run: |
+          # check if we need to build
+          D=86400 # 24 hours in seconds
+
+          lastcommit="$(curl -sL https://api.github.com/repos/$GITHUB_REPOSITORY/commits | jq -r '[.[] | select (.commit.message != "Updating docs") ][0].commit.author.date')"
+          timestamp=$(date -u -d "$lastcommit" +%s)
+          days=$(( ( $(date -u +%s) - $timestamp ) / $D ))
+          worktodo=1
+          echo "lastcommit: $lastcommit"
+          echo "timestamp: $timestamp"
+          echo "days: $days"
+          if [[ $days -gt 0 && $GITHUB_EVENT_NAME == 'scheduled' ]]; then
+            echo "nothing to do, last 'human' commit was $days days ago"
+            worktodo=0
+          fi
+          echo "worktodo: $worktodo"
+          echo "GHA_WORK_TO_DO=$worktodo" >> $GITHUB_ENV
