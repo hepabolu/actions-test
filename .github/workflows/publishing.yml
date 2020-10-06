@@ -28,6 +28,7 @@ jobs:
           echo "lastcommit: $lastcommit"
           echo "timestamp: $timestamp"
           echo "days: $days"
+          echo "github event: $GITHUB_EVENT_NAME"
           if [[ $days -gt 0 && $GITHUB_EVENT_NAME == 'scheduled' ]]; then
             echo "nothing to do, last 'human' commit was $days days ago"
             worktodo=0
