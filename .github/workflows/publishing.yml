@@ -38,9 +38,9 @@ jobs:
       - name: release info
         id: release_info
         run: |
-          echo '::set-output tag::2020-10-06'
-          echo '::set-output release_type::nightly'
-          echo '::set-output browser_download_url::http://example.com'
+          echo '::set-output name=tag::2020-10-06'
+          echo '::set-output name=release_type::nightly'
+          echo '::set-output name=browser_download_url::http://example.com'
 
       - name: Create a Slack message
         id: slack_message
