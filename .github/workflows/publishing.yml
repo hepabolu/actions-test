@@ -18,7 +18,7 @@ jobs:
         shell: bash
         run: |
           # check if we need to build
-          D=30   # 86400 - 24 hours in seconds
+          D=300   # 86400 - 24 hours in seconds
 
           lastcommit="$(curl -sL https://api.github.com/repos/$GITHUB_REPOSITORY/commits | jq -r '[.[] | select (.commit.message != "Updating docs") ][0].commit.author.date')"
           timestamp=$(date -u -d "$lastcommit" +%s)
@@ -38,9 +38,9 @@ jobs:
       - name: release info
         id: release_info
         run: |
-          echo '::set-output tag=2020-10-06'
-          echo '::set-output release_type=nightly'
-          echo '::set-output browser_download_url=http://example.com'
+          echo '::set-output tag::2020-10-06'
+          echo '::set-output release_type::nightly'
+          echo '::set-output browser_download_url::http://example.com'
 
       - name: Create a Slack message
         id: slack_message
