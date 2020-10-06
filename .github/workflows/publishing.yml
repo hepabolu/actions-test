@@ -35,3 +35,7 @@ jobs:
           fi
           echo "worktodo: $worktodo"
           echo "GHA_WORK_TO_DO=$worktodo" >> $GITHUB_ENV
+
+    - name: cancelling the workflow if there is nothing to do
+      if: env.GHA_WORK_TO_DO == 0
+      uses: andymckay/cancel-action@0.2
